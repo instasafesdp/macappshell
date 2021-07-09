@@ -1,0 +1,32 @@
+name: "Create .app files out of binaries macOS"
+description: "Create .app files out of binaries macOS"
+inputs:
+  APPNAME:
+    description: "APPNAME"
+    required: true
+  ICONNAME:
+    description: "ICONNAME"
+    required: true
+  BUNDLEID:
+    description: "BUNDLEID"
+    required: true
+  VERSIONNO:
+    description: "VERSIONNO"
+    required: true
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-id }}
+runs:
+  using: "composite"
+  steps:
+    - run: echo "Hello. Starting Action now."
+      shell: bash
+    - name: "Create the app file"
+      id: generate-app
+      run: |
+        chmod +x setup.sh
+        ./setup.sh "$APPNAME" $ICONNAME $BUNDLEID $VERSIONNO
+      shell: bash
+    - run: cp $APPNAME $APPNAME.app/Contents/MacOS/MyNewApp
+      shell: bash
