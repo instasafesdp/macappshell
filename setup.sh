@@ -7,7 +7,7 @@ function die {
 	exit 1
 }
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 4 ]; then
 	die "Usage: `basename $0` AppNameHere icon-file.icns BundleID VersionNo"
 fi
 
