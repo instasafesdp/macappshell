@@ -25,8 +25,8 @@ runs:
     - name: "Create the app file"
       id: generate-app
       run: |
-        chmod +x setup.sh
-        ./setup.sh "$APPNAME" $ICONNAME $BUNDLEID $VERSIONNO
+        chmod +x ${{ github.action_path }}/setup.sh
+        ./${{ github.action_path }}/setup.sh "${{ inputs.APPNAME }}" ${{ inputs.ICONNAME }} ${{ inputs.BUNDLEID }} ${{ inputs.VERSIONNO }}
       shell: bash
-    - run: cp $APPNAME $APPNAME.app/Contents/MacOS/MyNewApp
+    - run: cp ${{ inputs.APPNAME }} ${{ inputs.APPNAME }}.app/Contents/MacOS/MyNewApp
       shell: bash
