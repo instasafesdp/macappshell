@@ -8,11 +8,20 @@ function die {
 }
 
 if [ "$#" -ne 2 ]; then
-	die "Usage: `basename $0` AppNameHere icon-file.svg"
+	die "Usage: `basename $0` AppNameHere icon-file.icns BundleID VersionNo"
 fi
 
 APPNAME=$1
 ICONNAME=$2
+BUNDLEID=$3
+VERSIONNO=$4
+
+echo "You have entered"
+
+echo "APPNAME ==> $APPNAME"
+echo "ICONNAME ==> $ICONNAME"
+echo "BUNDLEID ==> $BUNDLEID"
+echo "VERSIONNO ==> $VERSIONNO"
 
 if [ ! -f $ICONNAME ]; then
 	die "Image file for icon not found"
@@ -30,13 +39,13 @@ cat > "$APPNAME.app/Contents/Info.plist" <<END
   <key>CFBundleExecutable</key>
   <string>$APPNAME</string>
   <key>CFBundleIdentifier</key>
-  <string>com.example.www</string>
+  <string>$BUNDLEID</string>
   <key>CFBundleName</key>
   <string>$APPNAME</string>
   <key>CFBundleIconFile</key>
-  <string>icon.icns</string>
+  <string>$ICONNAME</string>
   <key>CFBundleShortVersionString</key>
-  <string>0.01</string>
+  <string>$VERSIONNO</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundlePackageType</key>
@@ -52,35 +61,35 @@ cat > "$APPNAME.app/Contents/Info.plist" <<END
 END
 
 cp $ICONNAME "$APPNAME.app/Contents/Resources/"
-cd "$APPNAME.app/Contents/Resources/"
+# cd "$APPNAME.app/Contents/Resources/"
 
-fileName="$(basename $ICONNAME)"
-postfix=${fileName##*.}
+# fileName="$(basename $ICONNAME)"
+# postfix=${fileName##*.}
 
-if [[ $postfix == 'svg' ]]; then
-    qlmanage -z -t -s 1024 -o ./ "$fileName"
-    fileName=${fileName}.png
-fi
+# if [[ $postfix == 'svg' ]]; then
+#     qlmanage -z -t -s 1024 -o ./ "$fileName"
+#     fileName=${fileName}.png
+# fi
 
-echo $fileName
+# echo $fileName
 
-mkdir icon.iconset
+# mkdir icon.iconset
 
-sips -z 16 16 "$fileName" --out icon.iconset/icon_16x16.png
-sips -z 32 32 "$fileName" --out icon.iconset/icon_16x16@2x.png
-cp icon.iconset/icon_16x16@2x.png icon.iconset/icon_32x32.png
-sips -z 64 64 "$fileName" --out icon.iconset/icon_32x32@2x.png
-sips -z 128 128 "$fileName" --out icon.iconset/icon_128x128.png
-sips -z 256 256 "$fileName" --out icon.iconset/icon_128x128@2x.png
-cp icon.iconset/icon_128x128@2x.png icon.iconset/icon_256x256.png
-sips -z 512 512 "$fileName" --out icon.iconset/icon_256x256@2x.png
-cp icon.iconset/icon_256x256@2x.png icon.iconset/icon_512x512.png
-sips -z 1024 1024 "$fileName" --out icon.iconset/icon_512x512@2x.png
+# sips -z 16 16 "$fileName" --out icon.iconset/icon_16x16.png
+# sips -z 32 32 "$fileName" --out icon.iconset/icon_16x16@2x.png
+# cp icon.iconset/icon_16x16@2x.png icon.iconset/icon_32x32.png
+# sips -z 64 64 "$fileName" --out icon.iconset/icon_32x32@2x.png
+# sips -z 128 128 "$fileName" --out icon.iconset/icon_128x128.png
+# sips -z 256 256 "$fileName" --out icon.iconset/icon_128x128@2x.png
+# cp icon.iconset/icon_128x128@2x.png icon.iconset/icon_256x256.png
+# sips -z 512 512 "$fileName" --out icon.iconset/icon_256x256@2x.png
+# cp icon.iconset/icon_256x256@2x.png icon.iconset/icon_512x512.png
+# sips -z 1024 1024 "$fileName" --out icon.iconset/icon_512x512@2x.png
 
-# Create .icns file
-iconutil -c icns icon.iconset
+# # Create .icns file
+# iconutil -c icns icon.iconset
 
 # Cleanup
-rm -R icon.iconset
-rm $fileName
+# rm -R icon.iconset
+# rm $fileName
 
